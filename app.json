@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/poi/index",
+    "pages/poi/detail",
+    "pages/check/index",
+    "pages/rank/index",
+    "pages/nearby/index",
+    "pages/feed/index",
+    "pages/profile/index",
+    "pages/profile/edit",
+    "pages/comment/index",
+    "pages/checkins/index",
+    "pages/redeems/index",
+    "pages/gifts/index",
+    "pages/feed/edit"
+  ],
+  "window": {
+    "navigationBarTitleText": "游客",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f8fa",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "custom": true,
+    "list": [
+      { "pagePath": "pages/home/index", "text": "首页" },
+      { "pagePath": "pages/check/index", "text": "打卡" },
+      { "pagePath": "pages/nearby/index", "text": "附近" },
+      { "pagePath": "pages/feed/index", "text": "动态" },
+      { "pagePath": "pages/profile/index", "text": "我的" }
+    ]
+  },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于地图定位打卡"
+    }
+  }
+}

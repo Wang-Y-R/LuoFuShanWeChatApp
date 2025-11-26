@@ -1,0 +1,49 @@
+.card + .card {
+  margin-top: 16rpx;
+}
+.section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 16rpx;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select-wrap {
+  position: relative;
+}
+.select {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: #f9fafb;
+  border: 1rpx solid #e5e7eb;
+  border-radius: 9999rpx;
+  padding: 8rpx 12rpx;
+  color: #333;
+}
+.chevron {
+  color: #666;
+}
+.select-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8rpx);
+  border: 1rpx solid #e5e7eb;
+  border-radius: 12rpx;
+  overflow: hidden;
+  background: #fff;
+  min-width: 160rpx;
+  z-index: 10;
+}
+.select-item {
+  padding: 12rpx 16rpx;
+  color: #333;
+}
+.select-item + .select-item {
+  border-top: 1rpx solid #f3f4f6;
+}

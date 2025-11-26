@@ -1,0 +1,21 @@
+<view class="container">
+  <view style="display:flex;gap:16rpx;">
+    <block wx:for="{{tabs}}" wx:key="index">
+      <view data-index="{{index}}" bindtap="onTab" style="padding:12rpx 24rpx;border-radius:9999rpx;background-color:{{activeTab==index?'#07c160':'#efefef'}};color:{{activeTab==index?'#fff':'#333'}};">
+        {{item}}
+      </view>
+    </block>
+  </view>
+  <block wx:for="{{list}}" wx:key="id">
+    <view class="card" style="margin-top:16rpx;">
+      <view class="card-body" style="display:flex;align-items:center;gap:16rpx;">
+        <image src="{{item.avatar}}" style="width:64rpx;height:64rpx;border-radius:50%" />
+        <view style="flex:1;">
+          <view>{{item.name}}</view>
+          <view style="color:#666;">积分 {{item.points}} 打卡 {{item.count}}</view>
+        </view>
+        <view>#{{item.rank}}</view>
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="profile-header">
+    <view class="profile-card">
+      <image src="{{user.avatar}}" class="avatar" />
+      <view class="info">
+        <view class="name">{{user.nickname}}</view>
+        <view class="meta">积分 {{user.points}} · 等级 {{user.level}}</view>
+      </view>
+      <button class="btn" size="mini" bindtap="goEdit">修改资料</button>
+    </view>
+  </view>
+
+  <view class="quick-actions">
+    <view class="qa-item" bindtap="goCheckins">
+      <view class="qa-icon">📍</view>
+      <view class="qa-text">我的打卡</view>
+    </view>
+    <view class="qa-item" bindtap="goRedeems">
+      <view class="qa-icon">🎫</view>
+      <view class="qa-text">兑换记录</view>
+    </view>
+    <view class="qa-item" bindtap="goGifts">
+      <view class="qa-icon">🎁</view>
+      <view class="qa-text">礼物兑换</view>
+    </view>
+  </view>
+
+  <view class="section-title">客服热线</view>
+  <view>
+    <button class="btn-secondary" bindtap="onCall">拨打 400-000-0000</button>
+  </view>
+</view>

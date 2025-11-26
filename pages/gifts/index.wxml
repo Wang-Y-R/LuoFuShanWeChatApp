@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="section-title">可兑换礼品</view>
+  <view class="grid">
+    <block wx:for="{{items}}" wx:key="id">
+      <view class="card">
+        <image src="{{item.cover}}" mode="aspectFill" style="width:100%;height:240rpx" />
+        <view class="card-body">
+          <view style="display:flex;justify-content:space-between;align-items:center;">
+            <text>{{item.name}}</text>
+            <text style="color:#07c160;">{{item.points}} 积分</text>
+          </view>
+          <view style="color:#666;">兑换地点：{{item.place}}</view>
+          <view style="margin-top:12rpx;display:flex;gap:12rpx;">
+            <button class="btn" size="mini" data-id="{{item.id}}" bindtap="onRedeem">兑换</button>
+            <button class="btn-navigate" size="mini" data-lat="{{item.lat}}" data-lng="{{item.lng}}" bindtap="onNavigate">导航</button>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

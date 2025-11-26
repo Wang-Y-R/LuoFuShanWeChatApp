@@ -1,0 +1,3 @@
+.container image {
+  border-radius: 12rpx;
+}

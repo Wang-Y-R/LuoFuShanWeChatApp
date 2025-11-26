@@ -1,0 +1,51 @@
+<view class="container">
+  <view class="section">
+    <view class="section-header">
+      <text>当前位置推荐</text>
+      <view class="select-wrap">
+        <view class="select" bindtap="toggleSort">
+          <text>排序 {{sorts[activeSort]}}</text>
+          <text class="chevron">▾</text>
+        </view>
+        <view wx:if="{{sortOpen}}" class="select-menu">
+          <block wx:for="{{sorts}}" wx:key="index">
+            <view class="select-item" data-index="{{index}}" bindtap="selectSort">{{item}}</view>
+          </block>
+        </view>
+      </view>
+    </view>
+    <view class="location-row">
+      <text class="loc-name">当前位置：{{locationName || '未定位'}} </text>
+      <view class="loc-actions">
+        <text class="link" bindtap="onRefreshLocation">刷新</text>
+        <text class="link" bindtap="onChooseLocation">选择</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="chips">
+      <block wx:for="{{categories}}" wx:key="index">
+        <view class="chip {{activeCategory==index?'chip-active':''}}" data-index="{{index}}" bindtap="onCategory">{{item}}</view>
+      </block>
+    </view>
+  </view>
+
+  <view class="section">
+    <block wx:for="{{list}}" wx:key="id">
+      <view class="card">
+        <view class="card-body">
+          <image src="{{item.cover}}" mode="aspectFill" class="thumb" />
+          <view class="item-info">
+            <view class="item-title">{{item.name}}</view>
+            <view class="item-meta">距离 {{item.distance}}km · 热度 {{item.popularity}}</view>
+            <view class="actions">
+              <button class="btn" size="mini" data-id="{{item.id}}" bindtap="onDetail">详情</button>
+              <button class="btn-navigate" size="mini" data-lat="{{item.lat}}" data-lng="{{item.lng}}" bindtap="onNavigate">导航</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

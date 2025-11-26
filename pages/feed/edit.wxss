@@ -1,0 +1,21 @@
+.section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 16rpx;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+.actions {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 12rpx;
+}
+.muted {
+  color: #666;
+}

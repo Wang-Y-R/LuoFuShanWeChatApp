@@ -1,0 +1,111 @@
+.section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 16rpx;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select-wrap {
+  position: relative;
+}
+.select {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: #f9fafb;
+  border: 1rpx solid #e5e7eb;
+  border-radius: 9999rpx;
+  padding: 8rpx 12rpx;
+  color: #333;
+}
+.chevron {
+  color: #666;
+}
+.select-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8rpx);
+  border: 1rpx solid #e5e7eb;
+  border-radius: 12rpx;
+  overflow: hidden;
+  background: #fff;
+  min-width: 160rpx;
+  z-index: 10;
+}
+.select-item {
+  padding: 12rpx 16rpx;
+  color: #333;
+}
+.select-item + .select-item {
+  border-top: 1rpx solid #f3f4f6;
+}
+.location-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12rpx;
+}
+.loc-name {
+  color: #666;
+}
+.loc-actions {
+  display: flex;
+  gap: 12rpx;
+}
+.link {
+  color: #07c160;
+}
+.chips {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+.chip {
+  padding: 12rpx 24rpx;
+  border-radius: 9999rpx;
+  background: #f3f4f6;
+  color: #333;
+}
+.chip-active {
+  background: #07c160;
+  color: #fff;
+}
+.card {
+  background: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  border: 1rpx solid #e5e7eb;
+  box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.08);
+  margin-bottom: 16rpx;
+}
+.card-body {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+}
+.thumb {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+}
+.item-info {
+  flex: 1;
+}
+.item-title {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.item-meta {
+  color: #666;
+  margin-top: 8rpx;
+}
+.actions {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 12rpx;
+}

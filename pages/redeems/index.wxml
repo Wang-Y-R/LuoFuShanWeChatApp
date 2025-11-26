@@ -1,0 +1,15 @@
+<view class="container">
+  <view class="section-title">兑换记录</view>
+  <block wx:for="{{list}}" wx:key="id">
+    <view class="card" style="margin-top:16rpx;">
+      <view class="card-body" style="display:flex;justify-content:space-between;align-items:center;">
+        <view>
+          <view>{{item.item}}</view>
+          <view style="color:#666;">{{item.time}} · {{item.place}}</view>
+        </view>
+        <view style="color:#07c160;">-{{item.points}}积分</view>
+      </view>
+    </view>
+  </block>
+  <view wx:if="{{list.length===0}}" style="color:#666;">暂无兑换记录</view>
+</view>
