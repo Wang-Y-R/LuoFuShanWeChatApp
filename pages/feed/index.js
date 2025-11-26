@@ -47,7 +47,14 @@ Page({
   },
   onComment(e) {
     const id = e.currentTarget.dataset.id
-    wx.navigateTo({ url: `/pages/comment/index?id=${id}` })
+    const item = this.data.list.find(i => i.id === id)
+    wx.navigateTo({
+      url: `/pages/comment/index?id=${id}`,
+      success: res => {
+        const ec = res.eventChannel
+        if (ec && item) ec.emit('post', item)
+      }
+    })
   },
   toggleSort() { this.setData({ sortOpen: !this.data.sortOpen }) },
   selectSort(e) {

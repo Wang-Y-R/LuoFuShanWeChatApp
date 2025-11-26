@@ -1,6 +1,6 @@
 App({
   onLaunch() {
-    doLogin()
+    // doLogin()
     const u = wx.getStorageSync('userInfo') || { avatar: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0', nickname: '游客' }
     this.globalData.user = u
     this.globalData.language = 'zh'
