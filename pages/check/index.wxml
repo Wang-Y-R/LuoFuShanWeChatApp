@@ -5,13 +5,12 @@
       <text class="loc-name">{{locationName || (selectedLat && selectedLng ? '已选位置' : '未定位')}}</text>
     </view>
     <view class="map-wrap">
-      <map id="map" latitude="{{latitude}}" longitude="{{longitude}}" scale="16" markers="{{markers}}" show-location="true" bindtap="onMapTap" class="map"></map>
+      <map id="map" latitude="{{centerLat}}" longitude="{{centerLng}}" scale="16" markers="{{markers}}" show-location="true" bindtap="onMapTap" bindmarkertap="onMarkerTap" class="map"></map>
     </view>
     <view class="actions">
       <button class="btn" bindtap="onLocate">定位</button>
       <button class="btn-secondary" bindtap="onPickLocation">选择位置</button>
       <button class="btn" bindtap="onCheckin">{{checkedIn?'已打卡':'打卡'}}</button>
-      <button class="btn-secondary" bindtap="onShare">分享</button>
     </view>
     <view class="muted">选中位置：{{locationName || '未选择'}}</view>
   </view>
@@ -19,4 +18,28 @@
     <navigator url="/pages/checkins/index" open-type="navigate" class="more-link">我的打卡</navigator>
     <navigator url="/pages/rank/index" open-type="navigate" class="more-link">查看排行榜</navigator>
   </view>
+  <view class="section">
+    <view class="section-title">可打卡地点</view>
+    <block wx:for="{{availablePlaces}}" wx:key="id">
+      <view class="place-item" data-id="{{item.id}}" bindtap="onSelectPlace">
+        <view class="place-row">
+          <text class="place-name">{{item.name}}</text>
+          <text class="place-dist">{{item.distanceText}}</text>
+        </view>
+      </view>
+    </block>
+    <view wx:if="{{!availablePlaces || availablePlaces.length===0}}" style="color:#666;">暂无可打卡地点</view>
+  </view>
+  <block wx:if="{{showFeedback}}">
+    <view class="feedback-overlay">
+      <view class="feedback-box">
+        <text class="fb-title">打卡成功</text>
+        <text class="fb-sub">位置：{{feedbackPlace}}</text>
+        <view class="fb-actions">
+          <button class="btn" bindtap="onShareFromFeedback">去分享</button>
+          <button class="btn-secondary" bindtap="hideFeedback">关闭</button>
+        </view>
+      </view>
+    </view>
+  </block>
 </view>

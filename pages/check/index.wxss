@@ -9,3 +9,30 @@
 .actions .btn, .actions .btn-secondary { flex:1; }
 .muted { color:#666;margin-top:12rpx; }
 .more-link { color:#07c160; }
+
+.feedback-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.feedback-box {
+  width: 86%;
+  background: #fff;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  text-align: center;
+}
+.fb-title { font-size: 34rpx; font-weight: 700; margin-bottom: 8rpx; }
+.fb-sub { color: #666; margin-bottom: 12rpx; display: block }
+.fb-actions { display:flex; gap:12rpx; justify-content:center }
+
+.place-item { padding: 12rpx 0; border-bottom: 1rpx solid #f1f1f1 }
+.place-row { display:flex; justify-content:space-between; align-items:center }
+.place-name { font-size: 30rpx; }
+.place-dist { color: #999 }
