@@ -18,3 +18,20 @@
 ```
 
 如果需要真机调试，需要重新注册一个新的小程序（不是直接扫码登录然后可选的2个测试账号，而是要重新注册，完成主体注册的，才可以上传到微信服务器真机测试）真机测试和模拟器在功能和页面渲染上存在巨大差异！
+
+```js
+/*
+API 使用示例
+// 加载打卡点
+  async loadLocations() {
+    try {
+      const res = await getCheckinLocations();
+      // 后端返回的数据在 res.data 中
+      this.setData({ points: res.data });
+      console.log('加载成功:', res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  },
+*/
+```
