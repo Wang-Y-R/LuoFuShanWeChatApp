@@ -1,11 +1,12 @@
+import { getPostComments } from "../../api/feed.js";
+
 Page({
   data: {
     postId: null,
     post: null,
-    comments: [
-      { id: 1, user: "游客E", time: "刚刚", content: "不错的景点。", avatar: "https://via.placeholder.com/128" },
-      { id: 2, user: "游客F", time: "5分钟前", content: "服务很好。", avatar: "https://via.placeholder.com/128" }
-    ],
+    comments: [],
+    page: 1,
+    size: 10,
     inputValue: ""
   },
   onLoad(q) {
@@ -22,6 +23,26 @@ Page({
       const stored = wx.getStorageSync('feed') || []
       const post = stored.find(i => i.id === id) || null
       if (post) this.setData({ post })
+    }
+    if (this.data.postId) {
+      this.fetchComments()
+    }
+  },
+  async fetchComments() {
+    try {
+      const res = await getPostComments(this.data.postId, this.data.page, this.data.size)
+      const records = (res && res.data && Array.isArray(res.data.records)) ? res.data.records : []
+      const list = records.map(r => ({
+        id: r.commentId || r.id,
+        user: r.nickname || (r.userId ? ('用户' + r.userId) : '游客'),
+        time: r.createdAt ? r.createdAt.replace('T',' ').slice(0,16) : '',
+        content: r.content || '',
+        avatar: r.avatarUrl || 'https://via.placeholder.com/128'
+      }))
+      this.setData({ comments: list })
+    } catch (e) {
+      wx.showToast({ title: '加载评论失败', icon: 'none' })
+      this.setData({ comments: [] })
     }
   },
   onInput(e) {

@@ -65,7 +65,7 @@ export const getNearbyList = (type, latitude, longitude, page = 1, size = 10, so
  * "hotScore": 95,
  * "coverImg": "https://example.com/images/jiuzhaigou.jpg",
  * "createdAt": "2025-11-27 10:00:00",
- * "contentList": [
+ * "content": [
  * { "type": "text", "value": "九寨沟风景区位于..." },
  * { "type": "image", "value": "https://example.com/images/1.jpg" }
  * ]

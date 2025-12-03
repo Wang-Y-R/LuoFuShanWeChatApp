@@ -1,13 +1,13 @@
+import { getFeedList } from "../../api/feed.js";
+
 Page({
   data: {
     sorts: ["时间", "距离", "点赞", "评论"],
     activeSort: 0,
     sortOpen: false,
     list: [],
-    temp_list: [
-      { id: 1, user: "游客C", time: "昨天", ts: Date.now()-86400000, content: "打卡罗浮山，风景很美。", photos: ["https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80", "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1200&q=80"], likes: 12, comments: 3, avatar: "https://randomuser.me/api/portraits/women/65.jpg", lat: 23.2695, lng: 114.1399, place: "冲虚古观" },
-      { id: 2, user: "游客D", time: "1小时前", ts: Date.now()-3600000, content: "罗浮山骑行很开心。", photos: ["https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80"], likes: 8, comments: 1, avatar: "https://randomuser.me/api/portraits/men/32.jpg", lat: 23.2742, lng: 114.1491, place: "飞云峰" }
-    ],
+    page: 1,
+    size: 10,
     currentLat: null,
     currentLng: null
   },
@@ -15,12 +15,44 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 3 })
     }
-    const stored = wx.getStorageSync('feed') || []
-    const list = stored.length ? [...stored] : [...this.data.temp_list]
-    this.setData({ list:list })
     wx.getLocation({ type: 'gcj02', success: r => {
-      this.setData({ currentLat: r.latitude, currentLng: r.longitude }, () => this.applySort())
-    } })
+      this.setData({ currentLat: r.latitude, currentLng: r.longitude }, () => this.fetchList())
+    }, fail: () => { this.fetchList() } })
+  },
+  async fetchList() {
+    const sortIdx = this.data.activeSort
+    const sortMap = ['time','distance','like','comment']
+    const sortBy = sortMap[sortIdx] || 'time'
+    const lat = this.data.currentLat
+    const lng = this.data.currentLng
+    try {
+      const res = await getFeedList('', lat || null, lng || null, this.data.page, this.data.size, sortBy)
+      const app = getApp()
+      const defAvatar = app && app.globalData && app.globalData.user && app.globalData.user.avatar || ''
+      const records = (res && res.data && Array.isArray(res.data.records)) ? res.data.records : []
+      const list = records.map(r => {
+        const ts = r.postTime ? new Date(r.postTime).getTime() : Date.now()
+        const tstr = r.postTime ? (r.postTime.replace('T',' ').slice(0,16)) : ''
+        return {
+          id: r.id,
+          user: r.nickname || '游客',
+          time: tstr,
+          ts: ts,
+          content: r.title || '',
+          photos: Array.isArray(r.images) ? r.images : [],
+          likes: r.likeCount || 0,
+          comments: r.commentCount || 0,
+          avatar: r.avatarUrl || defAvatar,
+          lat: r.latitude || null,
+          lng: r.longitude || null,
+          place: r.locationName || ''
+        }
+      })
+      this.setData({ list }, () => this.applySort())
+    } catch (e) {
+      wx.showToast({ title: '加载失败', icon: 'none' })
+      this.setData({ list: [] }, () => this.applySort())
+    }
   },
   applySort() {
     const sortIdx = this.data.activeSort
@@ -59,7 +91,7 @@ Page({
   toggleSort() { this.setData({ sortOpen: !this.data.sortOpen }) },
   selectSort(e) {
     const idx = Number(e.currentTarget.dataset.index)
-    this.setData({ activeSort: idx, sortOpen: false }, () => this.applySort())
+    this.setData({ activeSort: idx, sortOpen: false }, () => this.fetchList())
   },
   computeDistance(lat1, lng1, lat2, lng2) {
     const toRad = v => v * Math.PI / 180

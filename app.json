@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/home/index",
-    "pages/poi/index",
     "pages/poi/detail",
     "pages/check/index",
     "pages/rank/index",
