@@ -94,9 +94,9 @@ export const getCheckinHistory = (page = 1, size = 10) => {
   }
 }
 */
-export const submitCheckin = ( locationId, checkinTime) => {
+export const submitCheckin = ( id, checkinTime) => {
   return request('/checkin/user', 'POST', {
-    locationId: locationId,
+    id: id,
     checkinTime: checkinTime
   });
 };
