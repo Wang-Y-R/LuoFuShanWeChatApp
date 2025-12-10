@@ -1,5 +1,5 @@
 import { getCheckinLocations ,submitCheckin} from "../../api/checkin.js"
-import { todayHasCheckedIn } from "../../data/todayCheckins.js"
+import { todayHasCheckedIn ,addTodayCheckin} from "../../data/todayCheckins.js"
 import { formatDateTime } from '../../utils/date.js'
 
 Page({
@@ -160,6 +160,10 @@ Page({
     
     const p = nearest.point
     const name = p.name || this.data.locationName || '打卡点'
+    if (this.isPointChecked(p)) {
+      wx.showToast({ title: '打卡点今日已打卡', icon: 'none' })
+      return
+    }
     // 调用打卡接口
     submitCheckin(p.id, formatDateTime(new Date()))
     .then(res => {
@@ -167,6 +171,7 @@ Page({
         wx.showToast({ title: '打卡成功', icon: 'success', duration: 1200 })
         this.setData({ checkedIn: true, feedbackPlace: name, showFeedback: true })
         setTimeout(() => this.setData({ checkedIn: false }), 1200)
+        addTodayCheckin(p.id)
         this.loadMarkers()
       } else {
         wx.showToast({ title: '打卡失败', icon: 'none' })
@@ -215,6 +220,10 @@ Page({
       wx.showToast({ title: '不在打卡范围（50m）', icon: 'none' })
       return
     }
+    if (this.isPointChecked(p)) {
+      wx.showToast({ title: '打卡点今日已打卡', icon: 'none' })
+      return
+    }
     // 调用打卡接口
     submitCheckin(p.id,formatDateTime(new Date()))
     .then(res => {
@@ -222,6 +231,7 @@ Page({
         wx.showToast({ title: '打卡成功', icon: 'success', duration: 1200 })
         this.setData({ checkedIn: true, feedbackPlace: name, showFeedback: true })
         setTimeout(() => this.setData({ checkedIn: false }), 1200)
+        addTodayCheckin(p.id)
         this.loadMarkers()
 
       } else {

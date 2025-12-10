@@ -94,11 +94,10 @@ export const getCheckinHistory = (page = 1, size = 10) => {
   }
 }
 */
-export const submitCheckin = ( id, checkinTime) => {
-  return request('/checkin/user', 'POST', {
-    id: id,
-    checkinTime: checkinTime
-  });
+export const submitCheckin = (id, checkinTime) => {
+  console.log(checkinTime)
+  const time = encodeURIComponent(checkinTime);
+  return request('/checkin/user?locationId='+ id + '&checkinTime=' + time, 'POST');
 };
 
 /**

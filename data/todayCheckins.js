@@ -30,12 +30,12 @@ export function todayHasCheckedIn(id) {
     return checkins.some(checkin => checkin.id === id)
 }
 
-export function addTodayCheckin(checkin) {
+export function addTodayCheckin(id) {
   const checkins = getTodayCheckins() || []
-  if (todayHasCheckedIn(checkin.id)) {
+  if (todayHasCheckedIn(id)) {
     return
   }
-  checkins.push(checkin)
+  checkins.push({id: id, checkinTime: formatDate(new Date())})
   setTodayCheckins(checkins)
 }
 
