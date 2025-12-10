@@ -1,4 +1,4 @@
-import { getCheckinLocations, getCheckinHistory ,submitCheckin} from "../../api/checkin.js"
+import { getCheckinLocations ,submitCheckin} from "../../api/checkin.js"
 import { todayHasCheckedIn } from "../../data/todayCheckins.js"
 import { formatDateTime } from '../../utils/date.js'
 
@@ -39,8 +39,6 @@ Page({
           // TODO 现在这里默认是分页查询，1页10个点，但目前只有8个点所以这里直接覆盖了
           let result = await getCheckinLocations()
           this.availablePoints = result.data
-          //获取打卡记录
-          this.updateCheckinHistory()
           this.loadMarkers()
         },
         fail: () => {
@@ -78,16 +76,6 @@ Page({
           wx.showToast({ title: "定位失败", icon: "none" })
         }
       })
-    })
-  },
-
-  updateCheckinHistory() {
-    getCheckinHistory().then(res => {
-      if (res.code === 200) {
-        this.setData({
-          checkinHistory: res.data.records
-        })
-      }
     })
   },
 
