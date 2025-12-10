@@ -56,7 +56,6 @@ Page({
         lng: d.longitude || d.lng || lng || this.data.detail.lng,
         sections
       }
-      console.log('detail.sections', detail.sections)
       this.setData({ detail })
     } catch (e) {
       wx.showToast({ title: '加载失败', icon: 'none' })

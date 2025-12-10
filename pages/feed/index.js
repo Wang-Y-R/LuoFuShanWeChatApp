@@ -27,8 +27,6 @@ Page({
     const lng = this.data.currentLng
     try {
       const res = await getFeedList('', lat || null, lng || null, this.data.page, this.data.size, sortBy)
-      const app = getApp()
-      const defAvatar = app && app.globalData && app.globalData.user && app.globalData.user.avatar || ''
       const records = (res && res.data && Array.isArray(res.data.records)) ? res.data.records : []
       const list = records.map(r => {
         const ts = r.postTime ? new Date(r.postTime).getTime() : Date.now()

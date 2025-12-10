@@ -1,19 +1,23 @@
+import { getUser } from '../../data/user.js'
+
 Page({
   data: {
-    user: { avatar: "https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0", nickname: "游客", points: 0, level: 1 }
+    user: { avatarUrl: "https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0", nickname: "游客", points: 0, weeklyCheckinCount: 0 }
   },
   onLoad() {
     const u = wx.getStorageSync('userInfo')
     if (u) {
-      this.setData({ user: { ...this.data.user, avatar: u.avatar, nickname: u.nickname } })
+      this.setData({ user: getUser() })
+      console.log(getUser())
     }
   },
   onShow() {
     const u = wx.getStorageSync('userInfo')
-    if (u) this.setData({ user: { ...this.data.user, avatar: u.avatar, nickname: u.nickname } })
+    if (u) this.setData({ user: getUser() })
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 4 })
     }
+    console.log(getUser())
   },
   onCall() {
     wx.makePhoneCall({ phoneNumber: "4000000000" })

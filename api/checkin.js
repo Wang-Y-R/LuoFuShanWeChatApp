@@ -95,7 +95,6 @@ export const getCheckinHistory = (userId, page = 1, size = 10) => {
 */
 export const submitCheckin = (userId, locationId, checkinTime) => {
   return request('/checkin/user', 'POST', {
-    userId: userId,
     locationId: locationId,
     checkinTime: checkinTime
   });
@@ -104,7 +103,7 @@ export const submitCheckin = (userId, locationId, checkinTime) => {
 /**
  * 接口4: 分享动态
  * 方法: POST
- * 参数: { userId, locationId, content, images(Array), postTime }
+ * 参数: {locationId, content, images(Array), postTime }
  * 说明: images 为图片链接数组
  */
 /*
@@ -126,7 +125,7 @@ export const submitCheckin = (userId, locationId, checkinTime) => {
   }
 }
 */
-export const submitSharePost = (data) => {
+export const submitSharePost = (locationId, content, images, postTime) => {
   // data 结构示例:
   // {
   //   userId: 1,
@@ -135,7 +134,12 @@ export const submitSharePost = (data) => {
   //   images: ["url1", "url2"],
   //   postTime: "2025-11-27 10:15:00"
   // }
-  return request('/post/user/share', 'POST', data);
+  return request('/post/user/share', 'POST', {
+    locationId: locationId,
+    content: content,
+    images: images,
+    postTime: postTime
+  });
 };
 
 

@@ -1,10 +1,10 @@
 <view class="container">
   <view class="profile-header">
     <view class="profile-card">
-      <image src="{{user.avatar}}" class="avatar" />
+      <image src="{{user.avatarUrl}}" class="avatar" />
       <view class="info">
         <view class="name">{{user.nickname}}</view>
-        <view class="meta">积分 {{user.points}} · 等级 {{user.level}}</view>
+        <view class="meta">积分 {{user.points}} · 周打卡 {{user.weeklyCheckinCount}}</view>
       </view>
       <button class="btn" size="mini" bindtap="goEdit">修改资料</button>
     </view>

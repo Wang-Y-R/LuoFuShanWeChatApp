@@ -97,7 +97,6 @@ export const getPostComments = (postId, page = 1, size = 10) => {
  * 方法：POST
  * 路径：/post/comment
  * * @param {number|string} postId - (必填) 动态ID
- * @param {number|string} userId - (必填) 评论用户ID
  * @param {string} content - (必填) 评论内容
  * * @returns {Promise}
  * 返回示例:
@@ -113,7 +112,7 @@ export const getPostComments = (postId, page = 1, size = 10) => {
  * }
  * }
  */
-export const sendPostComment = (postId, userId, content) => {
+export const sendPostComment = (postId, content) => {
   return request('/post/comment', 'POST', {
     postId,
     userId,
