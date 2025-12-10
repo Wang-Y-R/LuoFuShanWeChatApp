@@ -1,4 +1,6 @@
 import { request } from '../utils/api.js'; 
+import { getUserId } from '../data/user.js';
+
 /**
  * 接口1: 获取所有打卡点信息
  * 方法: GET
@@ -37,7 +39,7 @@ export const getCheckinLocations = () => {
 /**
  * 接口2: 查看打卡历史记录
  * 方法: GET
- * 参数: userId (必填), page (选填), size (选填)
+ * 参数: page (选填), size (选填)
  */
 /*
 {
@@ -50,13 +52,13 @@ export const getCheckinLocations = () => {
     "pages": 1,
     "records": [
       {
-        "locationId": 1,
+        "id": 1,
         "locationName": "九寨沟",
         "checkinTime": "2025-11-27 10:00:00",
         "score": 10
       },
       {
-        "locationId": 2,
+        "id: 2,
         "locationName": "成都锦江宾馆",
         "checkinTime": "2025-11-26 15:30:00",
         "score": 5
@@ -65,9 +67,8 @@ export const getCheckinLocations = () => {
   }
 }
 */
-export const getCheckinHistory = (userId, page = 1, size = 10) => {
+export const getCheckinHistory = (page = 1, size = 10) => {
   return request('/checkin/user/history', 'GET', {
-    userId: userId,
     page: page,
     size: size
   });
@@ -84,7 +85,7 @@ export const getCheckinHistory = (userId, page = 1, size = 10) => {
   "code": 200,
   "msg": "success",
   "data": {
-    "checkinId": 123,
+    "id": 123,
     "locationId": 1,
     "locationName": "九寨沟",
     "checkinTime": "2025-11-27 10:00:00",
@@ -93,7 +94,7 @@ export const getCheckinHistory = (userId, page = 1, size = 10) => {
   }
 }
 */
-export const submitCheckin = (userId, locationId, checkinTime) => {
+export const submitCheckin = ( locationId, checkinTime) => {
   return request('/checkin/user', 'POST', {
     locationId: locationId,
     checkinTime: checkinTime

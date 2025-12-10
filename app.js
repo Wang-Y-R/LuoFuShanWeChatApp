@@ -5,8 +5,6 @@ App({
   onLaunch() {
     this.handleSilentLogin();
     //TODO 这要改为从后端拿取用户信息
-    const u = wx.getStorageSync('userInfo') || { avatar: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0', nickname: '游客' }
-    this.globalData.user = u
     this.globalData.language = 'zh'
   },
 
@@ -48,5 +46,5 @@ App({
     });
   },
 
-  globalData: { user: null, language: 'zh', mapKey: 'G42BZ-6LWLT-JVXXV-LQWMS-JCD2H-JCFJM', loginCode: '' }
+  globalData: { language: 'zh', mapKey: 'G42BZ-6LWLT-JVXXV-LQWMS-JCD2H-JCFJM', loginCode: '' }
 })

@@ -115,7 +115,6 @@ export const getPostComments = (postId, page = 1, size = 10) => {
 export const sendPostComment = (postId, content) => {
   return request('/post/comment', 'POST', {
     postId,
-    userId,
     content
   });
 };

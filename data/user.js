@@ -21,3 +21,11 @@ export const getUser = () => {
 export const setUser = (u) => {
   wx.setStorageSync('user', u)
 }
+
+export const clearUser = () => {
+  wx.removeStorageSync('user')
+}
+
+export const getUserId = () => {
+  return getUser().id
+}

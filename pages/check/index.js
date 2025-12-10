@@ -1,3 +1,7 @@
+import { getCheckinLocations, getCheckinHistory ,submitCheckin} from "../../api/checkin.js"
+import { todayHasCheckedIn } from "../../data/todayCheckins.js"
+import { formatDateTime } from '../../utils/date.js'
+
 Page({
   data: {
     latitude: 23.4701, // 🚀 修正: 保持为用户实际位置 (用于距离计算和蓝点)
@@ -21,22 +25,22 @@ Page({
     this.ensureLocationAuth(() => {
       wx.getLocation({
         type: "gcj02",
-        success: res => {
+        success: async res => {
           // 🚀 修正: 同时更新用户位置和地图中心
           this.setData({
             latitude: res.latitude,
             longitude: res.longitude,
+            selectedLat: res.latitude,
+            selectedLng: res.longitude,
             centerLat: res.latitude, // 地图中心设置为当前位置
             centerLng: res.longitude // 地图中心设置为当前位置
           })
           this.getLocationName(res.latitude, res.longitude)
-          
-          // initialize a fixed set of sample points based on initial location
-          this.staticPoints = [
-            { id: 1, name: '入口处', latitude: res.latitude + 0.0012, longitude: res.longitude + 0.001 },
-            { id: 2, name: '观景台', latitude: res.latitude - 0.001, longitude: res.longitude - 0.0012 },
-            { id: 3, name: '服务点', latitude: res.latitude + 0.0005, longitude: res.longitude - 0.0008 }
-          ]
+          // TODO 现在这里默认是分页查询，1页10个点，但目前只有8个点所以这里直接覆盖了
+          let result = await getCheckinLocations()
+          this.availablePoints = result.data
+          //获取打卡记录
+          this.updateCheckinHistory()
           this.loadMarkers()
         },
         fail: () => {
@@ -61,9 +65,12 @@ Page({
           this.setData({
             latitude: res.latitude,
             longitude: res.longitude,
+            selectedLat: res.latitude,
+            selectedLng: res.longitude,
             centerLat: res.latitude, // 地图中心设置为当前位置
             centerLng: res.longitude // 地图中心设置为当前位置
           })
+          
           this.getLocationName(res.latitude, res.longitude)
           this.loadMarkers()
         },
@@ -71,6 +78,16 @@ Page({
           wx.showToast({ title: "定位失败", icon: "none" })
         }
       })
+    })
+  },
+
+  updateCheckinHistory() {
+    getCheckinHistory().then(res => {
+      if (res.code === 200) {
+        this.setData({
+          checkinHistory: res.data.records
+        })
+      }
     })
   },
 
@@ -155,26 +172,27 @@ Page({
     
     const p = nearest.point
     const name = p.name || this.data.locationName || '打卡点'
-    const list = wx.getStorageSync('checkins') || []
-    list.unshift({
-      id: Date.now(),
-      name,
-      time: new Date().toLocaleString(),
-      lat: p.latitude,
-      lng: p.longitude
+    // 调用打卡接口
+    submitCheckin(p.id, formatDateTime(new Date()))
+    .then(res => {
+      if (res.code === 200) {
+        wx.showToast({ title: '打卡成功', icon: 'success', duration: 1200 })
+        this.setData({ checkedIn: true, feedbackPlace: name, showFeedback: true })
+        setTimeout(() => this.setData({ checkedIn: false }), 1200)
+        this.loadMarkers()
+      } else {
+        wx.showToast({ title: '打卡失败', icon: 'none' })
+      }
     })
-    wx.setStorageSync('checkins', list)
-    wx.showToast({ title: '打卡成功', icon: 'success', duration: 1200 })
-    this.setData({ checkedIn: true, feedbackPlace: name, showFeedback: true })
-    setTimeout(() => this.setData({ checkedIn: false }), 1200)
-    this.loadMarkers()
+    .catch(() => {
+      wx.showToast({ title: '打卡失败', icon: 'none' })
+    })
   },
 
   // When user taps marker
   onMarkerTap(e) {
     const id = e && e.markerId
     if (id == null) return
-    
     const pts = this.availablePoints || []
     const p = pts.find(x => x.id === id)
     if (!p) return
@@ -185,7 +203,6 @@ Page({
     const dist = this.getDistance(curLat, curLng, p.latitude, p.longitude)
     const checked = this.isPointChecked(p)
     const title = `${p.name || '打卡点'}\n距离：${dist > 1000 ? (dist / 1000).toFixed(2) + 'km' : Math.round(dist) + 'm'}\n状态：${checked ? '已打卡' : '未打卡'}`
-    
     if (checked) {
       wx.showModal({ title: '打卡点信息', content: title, showCancel: false })
     } else {
@@ -210,17 +227,22 @@ Page({
       wx.showToast({ title: '不在打卡范围（50m）', icon: 'none' })
       return
     }
-    
-    const list = wx.getStorageSync('checkins') || []
-    list.unshift({
-      id: Date.now(),
-      name: p.name || '打卡点',
-      time: new Date().toLocaleString(),
-      lat: p.latitude,
-      lng: p.longitude
+    // 调用打卡接口
+    submitCheckin(p.id,formatDateTime(new Date()))
+    .then(res => {
+      if (res.code === 200) {
+        wx.showToast({ title: '打卡成功', icon: 'success', duration: 1200 })
+        this.setData({ checkedIn: true, feedbackPlace: name, showFeedback: true })
+        setTimeout(() => this.setData({ checkedIn: false }), 1200)
+        this.loadMarkers()
+
+      } else {
+        wx.showToast({ title: '打卡失败', icon: 'none' })
+      }
     })
-    wx.setStorageSync('checkins', list)
-    wx.showToast({ title: '打卡成功', icon: 'success' })
+    .catch(() => {
+      wx.showToast({ title: '打卡失败', icon: 'none' })
+    })
     this.setData({ feedbackPlace: p.name || '', showFeedback: true })
     this.loadMarkers()
   },
@@ -277,21 +299,6 @@ Page({
 
   // Load available points and build marker list
   loadMarkers() {
-    // Sample static points; replace with API if available
-    // 1. 确保 staticPoints 已定义，否则使用一个默认值
-    if (!this.staticPoints) {
-      // 使用 data 中默认的经纬度来生成一次 staticPoints
-      this.staticPoints = [
-        { id: 1, name: '入口处', latitude: this.data.latitude + 0.0012, longitude: this.data.longitude + 0.001 },
-        { id: 2, name: '观景台', latitude: this.data.latitude - 0.001, longitude: this.data.longitude - 0.0012 },
-        { id: 3, name: '服务点', latitude: this.data.latitude + 0.0005, longitude: this.data.longitude - 0.0008 }
-      ]
-    }
-    
-    // 2. 使用固定的 staticPoints
-    this.availablePoints = this.staticPoints
-    const checkedList = wx.getStorageSync('checkins') || []
-    
     const markers = this.availablePoints.map(p => {
       const checked = this.isPointChecked(p)
       return {
@@ -313,7 +320,7 @@ Page({
       }
     })
     
-    // keep selected marker on top if any
+    // TODO 用户自己点的打卡位置，理论上不可以
     if (this.data.selectedLat && this.data.selectedLng) {
       markers.push({
         id: 999,
@@ -325,21 +332,22 @@ Page({
       })
     }
     
-    // also prepare a list of available places with distance for the UI
+    // 更新打卡地点表
     const places = this.availablePoints.map(p => {
-      // 🚀 修正: 始终使用 this.data.latitude/longitude 计算距离
-      const dist = this.getDistance(this.data.latitude, this.data.longitude, p.latitude, p.longitude)
+      // TODO 这里现在为了展示效果，改成用手选的地点来计算位置
+      const dist = this.getDistance(this.data.selectedLat, this.data.selectedLng, p.latitude, p.longitude)
       return {
         id: p.id,
         name: p.name,
         latitude: p.latitude,
         longitude: p.longitude,
-        dist,
+        dist: dist,
         distanceText: dist > 1000 ? (dist / 1000).toFixed(2) + 'km' : Math.round(dist) + 'm',
         checked: this.isPointChecked(p)
       }
     })
-    
+    places.sort((a, b) => a.dist - b.dist)
+
     this.setData({ markers, availablePlaces: places })
   },
 
@@ -356,7 +364,7 @@ Page({
     return best
   },
 
-  // user selects a place from list
+  //TODO 用户手动选择打卡位置 理论上是不可以的，目前拿来测试
   onSelectPlace(e) {
     const id = e && e.currentTarget && Number(e.currentTarget.dataset.id)
     if (!id) return
@@ -364,7 +372,7 @@ Page({
     const p = (this.availablePoints || []).find(x => x.id === id)
     if (!p) return
     
-    // 🚀 修正: 将地图中心 (centerLat/centerLng) 移动到这个点，但保持用户位置不变
+    //将地图中心 (centerLat/centerLng) 移动到这个点，但保持用户位置不变
     this.setData({
       selectedLat: p.latitude,
       selectedLng: p.longitude,
@@ -375,9 +383,7 @@ Page({
   },
 
   isPointChecked(p) {
-    const list = wx.getStorageSync('checkins') || []
-    // consider a point checked if a stored checkin is within 50m
-    return list.some(i => this.getDistance(i.lat, i.lng, p.latitude, p.longitude) < 50)
+    return todayHasCheckedIn(p.id)
   },
 
   getDistance(lat1, lng1, lat2, lng2) {
