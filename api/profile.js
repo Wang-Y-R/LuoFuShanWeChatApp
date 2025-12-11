@@ -15,8 +15,8 @@ import { request } from "../utils/api";
 //   }
 // }
 
-export const getUserInfo = () => {
-  return request('/user/profile', 'GET');
+export const getUserInfo = async () => {
+  return await request('/user/profile', 'GET');
 };
 
 
@@ -32,8 +32,8 @@ export const getUserInfo = () => {
 //     "avatarUrl": "https://xxx/new.jpg"
 //   }
 // }
-export const changeUserInfo = (nickname, avatarUrl) => {
-  return request('/user/profile/update', 'POST', {
+export const changeUserInfo = async (nickname, avatarUrl) => {
+  return await request('/user/profile/update', 'POST', {
     nickname: nickname,
     avatarUrl: avatarUrl
   });
