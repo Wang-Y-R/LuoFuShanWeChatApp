@@ -15,15 +15,18 @@ const BASE_URL = 'https://www.picarran.xyz:8002';
  * @param {string} method - 请求方法 (GET, POST, PUT, DELETE)
  * @param {object} data - 请求参数
  */
-export const request = (url, method = 'GET', data = {}) => {
+export const request = (url, method = 'GET', data = {}, headers = {}) => {
   return new Promise((resolve, reject) => {
     // 1. 获取本地存储的 token
     const token = wx.getStorageSync('token');
 
     // 2. 构造请求头
-    const header = {
-      'content-type': 'application/json', // 默认 JSON 格式
-    };
+    let header = {};
+    if (headers['Content-Type']) {
+      header['Content-Type'] = headers['Content-Type'];
+    } else {
+      header['content-type'] = 'application/json'; // 默认 JSON 格式
+    }
 
     // 3. 如果有 token，自动添加到 Header 中
     // 注意：具体 Key 是 'token' 还是 'Authorization' 需根据后端要求微调
@@ -66,3 +69,26 @@ export const request = (url, method = 'GET', data = {}) => {
     });
   });
 };
+
+// 上传文件
+export async function uploadFile(file) {
+  const token = wx.getStorageSync('token');
+  console.log("上传文件:", file)
+    wx.uploadFile({
+    url: `${BASE_URL}/common/upload`,
+    filePath: file,           // 本地文件路径
+    name: 'file',             // 后端接收文件的字段名
+    header: {
+        "Content-Type": "multipart/form-data",
+        'Authorization': token
+    },
+    success(res) {
+        console.log('上传成功', res);
+        return res.data
+    },
+    fail(err) {
+        console.error('上传失败', err);
+        return err
+    }
+    });
+}

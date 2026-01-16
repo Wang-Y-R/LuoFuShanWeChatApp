@@ -67,7 +67,7 @@ export const changeUserInfo = async (nickname, avatarUrl) => {
 // }
 
 export const getRedeemRecords = (status = 'redeemed', current = 1, size = 10) => {
-  return request('/user/redeem/records', 'GET', {
+  return request('/exchange/my', 'GET', {
     status,
     current,
     size
@@ -126,7 +126,7 @@ export const getRedeemItems = (sort = 'points_desc', current = 1, size = 10) => 
 // }
 
 export const submitRedeemItem = (itemId) => {
-  return request('/mall/item/redeem', 'POST', {
+  return request('/mall/item/exchange', 'POST', {
     itemId: itemId
   });
 };
