@@ -43,16 +43,16 @@
           <image class="image-item" src="{{item.photos[0]}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="0" />
         </view>
         <view wx:elif="{{item.photos.length === 2}}" class="two-images">
-          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+          <image wx:for="{{item.photos}}" wx:for-item="photo" wx:for-index="photoIndex" wx:key="photoIndex" class="image-item" src="{{photo}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{photoIndex}}" />
         </view>
         <view wx:elif="{{item.photos.length === 3}}" class="three-images">
-          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+          <image wx:for="{{item.photos}}" wx:for-item="photo" wx:for-index="photoIndex" wx:key="photoIndex" class="image-item" src="{{photo}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{photoIndex}}" />
         </view>
         <view wx:elif="{{item.photos.length === 4}}" class="four-images">
-          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+          <image wx:for="{{item.photos}}" wx:for-item="photo" wx:for-index="photoIndex" wx:key="photoIndex" class="image-item" src="{{photo}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{photoIndex}}" />
         </view>
         <view wx:else class="multi-images">
-          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+          <image wx:for="{{item.photos}}" wx:for-item="photo" wx:for-index="photoIndex" wx:key="photoIndex" class="image-item" src="{{photo}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{photoIndex}}" />
         </view>
       </view>
 
