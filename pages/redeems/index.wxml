@@ -1,13 +1,46 @@
 <view class="container">
   <view class="section-title">兑换记录</view>
+
+  <!-- Tab切换 -->
+  <view class="tab-container">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="value"
+      class="tab-item {{index === activeTab ? 'active' : ''}}"
+      data-index="{{index}}"
+      bindtap="switchTab"
+    >
+      {{item.label}}
+    </view>
+  </view>
   <block wx:for="{{list}}" wx:key="id">
     <view class="card" style="margin-top:16rpx;">
-      <view class="card-body" style="display:flex;justify-content:space-between;align-items:center;">
-        <view>
-          <view>{{item.item}}</view>
-          <view style="color:#666;">{{item.time}} · {{item.place}}</view>
+      <view class="card-body">
+        <view style="margin-bottom:12rpx;">
+          <view style="font-weight:500;">{{item.item}}</view>
+          <view style="color:#666;font-size:24rpx;margin-top:4rpx;">{{item.time}} · {{item.place}}</view>
         </view>
-        <view style="color:#07c160;">-{{item.points}}积分</view>
+
+        <!-- 兑换码区域 -->
+        <view wx:if="{{item.code}}" class="code-section">
+          <view style="display:flex;align-items:center;margin-bottom:8rpx;">
+            <text style="color:#666;font-size:26rpx;margin-right:8rpx;">兑换码:</text>
+            <text style="font-family:monospace;font-weight:500;color:#333;">{{item.code}}</text>
+          </view>
+          <view style="display:flex;gap:12rpx;">
+            <button
+              class="code-btn"
+              size="mini"
+              data-code="{{item.code}}"
+              bindtap="copyCode"
+            >
+              复制兑换码
+            </button>
+            <view wx:if="{{item.isRedeemed}}" style="color:#52c41a;font-size:24rpx;align-self:center;">
+              ✓ 已核销
+            </view>
+          </view>
+        </view>
       </view>
     </view>
   </block>

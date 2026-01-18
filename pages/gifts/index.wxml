@@ -18,4 +18,37 @@
       </view>
     </block>
   </view>
+
+  <!-- 兑换成功弹窗 -->
+  <view wx:if="{{showRedeemModal}}" class="redeem-modal" bindtap="closeRedeemModal">
+    <view class="redeem-modal-content" catchtap>
+      <view class="redeem-modal-header">
+        <text class="redeem-modal-title">🎉 兑换成功</text>
+        <text class="redeem-modal-close" bindtap="closeRedeemModal">✕</text>
+      </view>
+
+      <view class="redeem-item-info">
+        <image class="redeem-item-image" src="{{redeemedItem.cover}}" mode="aspectFill" />
+        <view class="redeem-item-details">
+          <text class="redeem-item-name">{{redeemedItem.name}}</text>
+          <text class="redeem-item-points">消耗 {{redeemedItem.points}} 积分</text>
+        </view>
+      </view>
+
+      <view class="redeem-code-section">
+        <view class="redeem-code-label">兑换码</view>
+        <view class="redeem-code-display">
+          <text class="redeem-code-text">{{redeemCode}}</text>
+          <button class="code-copy-btn" size="mini" bindtap="copyRedeemCode">复制</button>
+        </view>
+        <view class="redeem-code-notice">
+          请妥善保存兑换码，前往指定兑换地点出示使用
+        </view>
+      </view>
+
+      <view class="redeem-modal-actions">
+        <button class="btn-confirm" bindtap="closeRedeemModal">我知道了</button>
+      </view>
+    </view>
+  </view>
 </view>

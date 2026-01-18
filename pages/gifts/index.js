@@ -5,7 +5,11 @@ Page({
     userPoints: 0,
     items: [],
     page: 1,
-    size: 20
+    size: 20,
+    // 兑换成功弹窗
+    showRedeemModal: false,
+    redeemedItem: null,
+    redeemCode: ""
   },
   onShow() {
     this.loadUserAndItems()
@@ -43,12 +47,63 @@ Page({
     try {
       const res = await submitRedeemItem(id)
       const data = res && res.data ? res.data : {}
+
+      // 兑换成功，显示兑换详情弹窗
+      if (data.code) {
+        this.setData({
+          showRedeemModal: true,
+          redeemedItem: {
+            name: it.name,
+            points: it.points,
+            cover: it.cover,
+            ...data
+          },
+          redeemCode: data.code
+        })
+
+      } else {
+        wx.showToast({ title: "兑换成功", icon: "success" })
+      }
+
       const remain = this.data.userPoints - it.points
       this.setData({ userPoints: remain >= 0 ? remain : 0 })
-      wx.showToast({ title: "兑换成功", icon: "success" })
     } catch (e) {
       wx.showToast({ title: "兑换失败", icon: "none" })
     }
+  },
+  // 复制兑换码
+  copyRedeemCode() {
+    const code = this.data.redeemCode
+    if (!code) {
+      wx.showToast({ title: "无兑换码", icon: "none" })
+      return
+    }
+
+    wx.setClipboardData({
+      data: code,
+      success: () => {
+        wx.showToast({
+          title: '兑换码已复制',
+          icon: 'success',
+          duration: 1500
+        })
+      },
+      fail: () => {
+        wx.showToast({
+          title: '复制失败，请手动复制',
+          icon: 'none',
+          duration: 1500
+        })
+      }
+    })
+  },
+  // 关闭兑换成功弹窗
+  closeRedeemModal() {
+    this.setData({
+      showRedeemModal: false,
+      redeemedItem: null,
+      redeemCode: ""
+    })
   },
   onNavigate(e) {
     const lat = Number(e.currentTarget.dataset.lat)
