@@ -1,0 +1,84 @@
+.container {
+  padding: 0;
+  background: #f5f0e6;
+  min-height: 100vh;
+}
+/* header moved to native navigation bar */
+.content-wrap {
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx 24rpx 24rpx 0; /* 左侧贴边，右侧有内边距 */
+}
+.sidebar {
+  width: 220rpx; /* 更宽，单行显示标签 */
+  min-width: 220rpx;
+}
+.tabs {
+  background: #e9dcc8;
+  border-radius: 0;
+  padding: 8rpx 8rpx;
+  height: calc(100vh - 160rpx);
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.tab-item {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 12rpx;
+  border-radius: 6rpx;
+  margin-bottom: 8rpx;
+  color: #333;
+  font-size: 30rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tab-item.active {
+  background: #fff;
+  color: #c93a2e;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.08);
+  border-left: 6rpx solid #c93a2e;
+}
+.tab-text {
+  display: block;
+  width: 100%;
+  padding-left: 6rpx;
+}
+.detail {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  padding-right: 24rpx;
+}
+.card {
+  width: 100%;
+  max-width: 880rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06);
+}
+.card-img {
+  width: 100%;
+  height: 320rpx;
+  object-fit: cover;
+}
+.card-body {
+  padding: 24rpx;
+}
+.card-title {
+  font-size: 34rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+  font-weight: 600;
+}
+.card-content {
+  max-height: 520rpx;
+}
+.card-text {
+  font-size: 28rpx;
+  line-height: 2.2;
+  color: #666;
+  padding-right: 12rpx;
+}
+

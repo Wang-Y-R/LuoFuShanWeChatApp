@@ -130,9 +130,5 @@ Page({
       wx.navigateTo({ url: `/pages/poi/detail?id=${id}` })
     }
   },
-  onNavigate(e) {
-    const lat = Number(e.currentTarget.dataset.lat)
-    const lng = Number(e.currentTarget.dataset.lng)
-    wx.openLocation({ latitude: lat, longitude: lng, name: "目的地" })
-  }
+  // 卡片整体点击会触发 onDetail，导航按钮已移除
 })

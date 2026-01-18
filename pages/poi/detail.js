@@ -9,7 +9,6 @@ Page({
       hours: "09:00-18:00",
       desc: "",
       video: "https://www.w3schools.com/html/mov_bbb.mp4",
-      fav: false,
       lat: 23.4701,
       lng: 114.2832,
       sections: []
@@ -39,7 +38,7 @@ Page({
       if (Array.isArray(d.content)) {
         raw = d.content
       } else if (typeof d.content === 'string') {
-        try { const parsed = JSON.parse(d.content); if (Array.isArray(parsed)) raw = parsed } catch(_) {}
+        try { const parsed = JSON.parse(d.content); if (Array.isArray(parsed)) raw = parsed } catch (_) { }
       }
       const sections = raw
         .filter(i => i && (i.type === 'text' || i.type === 'image') && (i.value || i.content))
@@ -51,7 +50,6 @@ Page({
         hours: this.data.detail.hours,
         desc: '',
         video: this.data.detail.video,
-        fav: false,
         lat: d.latitude || d.lat || lat || this.data.detail.lat,
         lng: d.longitude || d.lng || lng || this.data.detail.lng,
         sections
@@ -62,10 +60,6 @@ Page({
       const detail = { ...this.data.detail, id, lat: lat || this.data.detail.lat, lng: lng || this.data.detail.lng, sections: [] }
       this.setData({ detail })
     }
-  },
-  onFav() {
-    const d = this.data.detail
-    this.setData({ detail: { ...d, fav: !d.fav } })
   },
   onNavigate() {
     const d = this.data.detail

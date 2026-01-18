@@ -47,4 +47,16 @@ Page({
     const id = Number(e.currentTarget.dataset.id)
     wx.navigateTo({ url: `/pages/poi/detail?id=${id}` })
   },
+  onHeroTap() {
+    console.log('onHeroTap called')
+    try {
+      wx.navigateTo({
+        url: '/pages/poi/intro',
+        success: (res) => { console.log('navigateTo success', res) },
+        fail: (err) => { console.error('navigateTo fail', err) }
+      })
+    } catch (e) {
+      console.error('navigateTo exception', e)
+    }
+  }
 })

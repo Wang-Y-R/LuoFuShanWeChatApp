@@ -77,11 +77,17 @@
 }
 .card {
   background: #fff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   overflow: hidden;
   border: 1rpx solid #e5e7eb;
-  box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.08);
-  margin-bottom: 16rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 20rpx;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.12);
 }
 .card-body {
   display: flex;
@@ -107,5 +113,22 @@
 .actions {
   display: flex;
   gap: 12rpx;
+  align-items: center;
+  justify-content: flex-end; /* 右对齐：详情和导航并列靠右显示 */
   margin-top: 12rpx;
+}
+
+.btn-detail {
+  background: linear-gradient(135deg, #07c160, #00a854);
+  color: white;
+  border-radius: 20rpx;
+  font-weight: 600;
+}
+
+.btn-navigate {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1rpx solid #0ea5e9;
+  border-radius: 20rpx;
+  font-weight: 600;
 }

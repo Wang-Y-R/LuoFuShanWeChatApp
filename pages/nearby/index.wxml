@@ -33,16 +33,12 @@
 
   <view class="section">
     <block wx:for="{{list}}" wx:key="id">
-      <view class="card">
+      <view class="card" data-id="{{item.id}}" data-lat="{{item.lat}}" data-lng="{{item.lng}}" bindtap="onDetail">
         <view class="card-body">
           <image src="{{item.cover}}" mode="aspectFill" class="thumb" />
           <view class="item-info">
             <view class="item-title">{{item.name}}</view>
             <view class="item-meta">距离 {{item.distance}}km · 热度 {{item.popularity}}</view>
-            <view class="actions">
-              <button class="btn" size="mini" data-id="{{item.id}}" data-lat="{{item.lat}}" data-lng="{{item.lng}}" bindtap="onDetail">详情</button>
-              <button wx:if="{{item.lat && item.lng}}" class="btn-navigate" size="mini" data-lat="{{item.lat}}" data-lng="{{item.lng}}" bindtap="onNavigate">导航</button>
-            </view>
           </view>
         </view>
       </view>

@@ -1,5 +1,5 @@
 <view class="container">
-  <view class="hero">
+  <view class="hero" bindtap="onHeroTap">
     <image src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80" mode="aspectFill" class="hero-img" />
     <view class="hero-overlay">
       <view class="hero-title">南昆山-罗浮山景区介绍</view>

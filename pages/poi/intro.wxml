@@ -1,0 +1,34 @@
+<view class="container">
+
+  <view class="content-wrap">
+    <!-- 左侧 Tabs -->
+    <view class="sidebar">
+      <view class="tabs">
+        <block wx:for="{{tabs}}" wx:key="index">
+          <view
+            class="tab-item {{index===activeTab? 'active':''}}"
+            data-index="{{index}}"
+            bindtap="onSelectTab"
+          >
+            <text class="tab-text">{{item}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 右侧内容 -->
+    <view class="detail">
+      <view class="card">
+        <image class="card-img" src="{{heroImg}}" mode="aspectFill" />
+        <view class="card-body">
+          <view class="card-title">{{currentPage.title}}</view>
+          <scroll-view class="card-content" scroll-y>
+            <view class="card-text">{{currentPage.content}}</view>
+          </scroll-view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+

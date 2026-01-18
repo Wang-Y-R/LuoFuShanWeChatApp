@@ -1,3 +1,39 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  padding-bottom: 120rpx; /* 为底部导航留空间 */
+}
+
 .container image {
   border-radius: 12rpx;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: linear-gradient(135deg, #07c160, #00a854);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  color: white;
+  font-weight: 600;
+  font-size: 32rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(7, 193, 96, 0.3);
+}
+
+.nav-icon {
+  font-size: 36rpx;
+}
+
+.nav-text {
+  font-size: 32rpx;
 }

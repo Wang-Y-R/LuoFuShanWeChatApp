@@ -2,6 +2,7 @@
   "pages": [
     "pages/home/index",
     "pages/poi/detail",
+    "pages/poi/intro",
     "pages/check/index",
     "pages/rank/index",
     "pages/nearby/index",
@@ -16,14 +17,14 @@
   ],
   "window": {
     "navigationBarTitleText": "游客",
-    "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#c9a86b",
+    "navigationBarTextStyle": "white",
     "backgroundColor": "#f7f8fa",
     "enablePullDownRefresh": false
   },
-  "tabBar": {
+    "tabBar": {
     "color": "#666666",
-    "selectedColor": "#07c160",
+    "selectedColor": "#6b4a1f",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "custom": true,
