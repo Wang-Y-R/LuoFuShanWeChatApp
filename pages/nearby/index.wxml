@@ -38,7 +38,10 @@
           <image src="{{item.cover}}" mode="aspectFill" class="thumb" />
           <view class="item-info">
             <view class="item-title">{{item.name}}</view>
-            <view class="item-meta">距离 {{item.distance}}km · 热度 {{item.popularity}}</view>
+            <view class="item-meta">
+              <view class="item-distance">距离 {{item.distance}}km</view>
+              <view class="item-popularity">热度 {{item.popularity}}</view>
+            </view>
           </view>
         </view>
       </view>

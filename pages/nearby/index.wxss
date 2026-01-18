@@ -107,8 +107,17 @@
   font-weight: 600;
 }
 .item-meta {
-  color: #666;
   margin-top: 8rpx;
+}
+.item-distance {
+  color: #666;
+  font-size: 28rpx;
+}
+.item-popularity {
+  color: #999;
+  font-size: 26rpx;
+  margin-top: 6rpx;
+  font-weight: 600;
 }
 .actions {
   display: flex;
