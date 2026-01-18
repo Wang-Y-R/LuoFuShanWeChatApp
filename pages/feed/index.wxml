@@ -1,39 +1,124 @@
 <view class="container">
-  <view class="section">
-    <view class="section-header">
-      <text>动态</text>
-      <view class="select-wrap">
-        <view class="select" bindtap="toggleSort">
-          <text>排序 {{sorts[activeSort]}}</text>
-          <text class="chevron">▾</text>
-        </view>
-        <view wx:if="{{sortOpen}}" class="select-menu">
-          <block wx:for="{{sorts}}" wx:key="index">
-            <view class="select-item" data-index="{{index}}" bindtap="selectSort">{{item}}</view>
-          </block>
-        </view>
+  <!-- 排序筛选器 -->
+  <view class="sort-section">
+    <view class="sort-selector" bindtap="toggleSort">
+      <text class="sort-text">排序: {{sorts[activeSort]}}</text>
+      <text class="sort-arrow" wx:if="{{!sortOpen}}">▼</text>
+      <text class="sort-arrow" wx:else>▲</text>
+    </view>
+    <view wx:if="{{sortOpen}}" class="sort-menu">
+      <view wx:for="{{sorts}}" wx:key="index" class="sort-option {{index === activeSort ? 'active' : ''}}" data-index="{{index}}" bindtap="selectSort">
+        {{item}}
       </view>
     </view>
   </view>
+
+  <!-- 动态列表 -->
   <block wx:for="{{list}}" wx:key="id">
-    <view class="card" style="margin-top:16rpx;">
-      <view class="card-body">
-        <view style="display:flex;align-items:center;gap:16rpx;">
-          <image src="{{item.avatar}}" style="width:64rpx;height:64rpx;border-radius:50%" />
-          <view style="flex:1;">
-            <view>{{item.user}}</view>
-            <view style="color:#666;">{{item.time}} · 位置：{{item.place}}{{item.distance?(' · '+item.distance+'km'):''}}</view>
+    <view class="post-card">
+      <!-- 用户信息 -->
+      <view class="post-header">
+        <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="user-info">
+          <text class="username">{{item.user}}</text>
+          <view class="post-meta">
+            <text class="post-time">{{item.time}}</text>
+            <view wx:if="{{item.place}}" class="location-info">
+              <text class="location-icon">📍</text>
+              <text class="location-text">{{item.place}}</text>
+              <text wx:if="{{item.distance}}" class="distance-text">{{item.distance}}km</text>
+            </view>
           </view>
         </view>
-        <view style="margin-top:12rpx;">{{item.content}}</view>
-        <view style="display:flex;gap:8rpx;margin-top:12rpx;">
-          <image wx:for="{{item.photos}}" wx:key="index" src="{{item}}" style="width:32%;height:200rpx;border-radius:12rpx" mode="aspectFill" />
+      </view>
+
+      <!-- 文本内容 -->
+      <view wx:if="{{item.content}}" class="post-content">
+        {{item.content}}
+      </view>
+
+      <!-- 图片内容 -->
+      <view wx:if="{{item.photos && item.photos.length > 0}}" class="post-images">
+        <view wx:if="{{item.photos.length === 1}}" class="single-image">
+          <image class="image-item" src="{{item.photos[0]}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="0" />
         </view>
-        <view style="display:flex;gap:12rpx;margin-top:12rpx;">
-          <button class="btn-secondary" size="mini" data-id="{{item.id}}" bindtap="onLike">点赞 {{item.likes}}</button>
-          <button class="btn-secondary" size="mini" data-id="{{item.id}}" bindtap="onComment">评论 {{item.comments}}</button>
+        <view wx:elif="{{item.photos.length === 2}}" class="two-images">
+          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+        </view>
+        <view wx:elif="{{item.photos.length === 3}}" class="three-images">
+          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+        </view>
+        <view wx:elif="{{item.photos.length === 4}}" class="four-images">
+          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+        </view>
+        <view wx:else class="multi-images">
+          <image wx:for="{{item.photos}}" wx:key="index" class="image-item" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-urls="{{item.photos}}" data-index="{{index}}" />
+        </view>
+      </view>
+
+      <!-- 互动区域 -->
+      <view class="post-actions">
+        <view class="action-item" data-id="{{item.id}}" bindtap="onLike">
+          <text class="action-icon">{{item.liked ? '❤️' : '🤍'}}</text>
+          <text class="action-text">点赞</text>
+          <text wx:if="{{item.likes > 0}}" class="action-count">{{item.likes}}</text>
+        </view>
+        <view class="action-item" data-id="{{item.id}}" bindtap="onComment">
+          <text class="action-icon">💬</text>
+          <text class="action-text">评论</text>
+          <text wx:if="{{item.comments > 0}}" class="action-count">{{item.comments}}</text>
+        </view>
+      </view>
+
+      <!-- 评论列表 -->
+      <view wx:if="{{item.commentList && item.commentList.length > 0}}" class="comment-list">
+        <view wx:for="{{item.commentList}}" wx:key="id" class="comment-item">
+          <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill" />
+          <view class="comment-content">
+            <view class="comment-header">
+              <text class="comment-user">{{item.user}}</text>
+              <text class="comment-time">{{item.time}}</text>
+            </view>
+            <text class="comment-text">{{item.content}}</text>
+          </view>
         </view>
       </view>
     </view>
   </block>
+
+  <!-- 评论输入框弹窗 -->
+  <view wx:if="{{showCommentInput}}" class="comment-modal" bindtap="hideCommentInput">
+    <!-- 透明关闭区域 -->
+    <view class="modal-close-area" bindtap="hideCommentInput"></view>
+    <view class="comment-modal-content" catchtap>
+      <view class="comment-modal-header">
+        <text class="comment-modal-title">写评论</text>
+        <text class="comment-modal-close" bindtap="hideCommentInput">✕</text>
+      </view>
+      <textarea
+        class="comment-input"
+        placeholder="请输入评论内容..."
+        value="{{commentInputValue}}"
+        bindinput="onCommentInput"
+        bindblur="onCommentBlur"
+        auto-focus
+        maxlength="200"
+        cursor-spacing="{{20}}"
+        show-count="{{false}}"
+        adjust-position="{{true}}"
+      />
+      <view class="comment-modal-actions">
+        <button class="btn-cancel" bindtap="hideCommentInput">取消</button>
+        <button class="btn-submit" bindtap="onSendComment" disabled="{{!commentInputValue || commentInputValue.trim().length === 0}}">
+          <text wx:if="{{!commentInputValue || commentInputValue.trim().length === 0}}" style="color: #999;">发送</text>
+          <text wx:else style="color: #fff;">发送</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{list.length === 0}}" class="empty-state">
+    <text class="empty-text">暂无动态内容</text>
+  </view>
 </view>

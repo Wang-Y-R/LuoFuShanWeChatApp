@@ -1,20 +1,58 @@
 <view class="container">
-  <view class="section">
-    <view class="section-header">
-      <text>编辑内容</text>
-      <text class="muted">位置：{{place || '未选择'}}</text>
-    </view>
-    <view>
-      <textarea placeholder="写点什么..." value="{{text}}" bindinput="onInput" style="width:100%;min-height:160rpx;border:1rpx solid #e5e7eb;border-radius:12rpx;padding:12rpx;" />
-    </view>
-    <view style="margin-top:12rpx;display:flex;gap:12rpx;flex-wrap:wrap;">
-      <block wx:for="{{images}}" wx:key="index">
-        <image src="{{item}}" style="width:30%;height:200rpx;border-radius:12rpx;" mode="aspectFill" />
-      </block>
-    </view>
-    <view class="actions">
-      <button class="btn-secondary" bindtap="chooseImages">选择图片</button>
-      <button class="btn" bindtap="publish">发布</button>
-    </view>
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="onCancel">取消</view>
+    <view class="nav-title">发布动态</view>
+    <view class="nav-right" bindtap="publish">发布</view>
   </view>
+
+  <!-- 内容区域 -->
+  <scroll-view class="content" scroll-y="true">
+    <!-- 位置信息 -->
+    <view class="location-info" wx:if="{{place}}">
+      <view class="location-icon">📍</view>
+      <text class="location-text">{{place}}</text>
+    </view>
+
+    <!-- 文本输入框 -->
+    <view class="text-input-container">
+      <textarea
+        class="text-input"
+        placeholder="分享新鲜事..."
+        value="{{text}}"
+        bindinput="onInput"
+        bindlinechange="onLineChange"
+        placeholder-class="placeholder"
+        maxlength="1000"
+        auto-focus="{{true}}"
+        cursor-spacing="40"
+        auto-height="{{true}}"
+      />
+      <view class="text-count">{{text.length}}/1000</view>
+    </view>
+
+    <!-- 图片选择区域 -->
+    <view class="image-section">
+      <view class="image-grid">
+        <!-- 已选择的图片 -->
+        <view class="image-item" wx:for="{{images}}" wx:key="index" bindtap="previewImage" data-index="{{index}}">
+          <image class="image" src="{{item}}" mode="aspectFill" />
+          <view class="delete-btn" bindtap="deleteImage" data-index="{{index}}" catchtap>
+            <view class="delete-icon">✕</view>
+          </view>
+        </view>
+
+        <!-- 添加图片按钮 -->
+        <view class="add-image-btn" bindtap="chooseImages" wx:if="{{images.length < 9}}">
+          <view class="add-icon">📷</view>
+          <text class="add-text">{{images.length}}/9</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tips">
+      <text class="tip-text">发布动态将分享到社区广场</text>
+    </view>
+  </scroll-view>
 </view>

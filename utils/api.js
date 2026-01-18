@@ -74,21 +74,36 @@ export const request = (url, method = 'GET', data = {}, headers = {}) => {
 export async function uploadFile(file) {
   const token = wx.getStorageSync('token');
   console.log("上传文件:", file)
+
+  return new Promise((resolve, reject) => {
     wx.uploadFile({
-    url: `${BASE_URL}/common/upload`,
-    filePath: file,           // 本地文件路径
-    name: 'file',             // 后端接收文件的字段名
-    header: {
+      url: `${BASE_URL}/common/upload`,
+      filePath: file,           // 本地文件路径
+      name: 'file',             // 后端接收文件的字段名
+      header: {
         "Content-Type": "multipart/form-data",
         'Authorization': token
-    },
-    success(res) {
+      },
+      success(res) {
         console.log('上传成功', res);
-        return res.data
-    },
-    fail(err) {
+        try {
+          const data = JSON.parse(res.data);
+          if (data.code === 200) {
+            resolve(data.data.url); // 返回文件URL
+          } else {
+            wx.showToast({ title: data.msg || '上传失败', icon: 'none' });
+            reject(data);
+          }
+        } catch (e) {
+          wx.showToast({ title: '上传响应解析失败', icon: 'none' });
+          reject(e);
+        }
+      },
+      fail(err) {
         console.error('上传失败', err);
-        return err
-    }
+        wx.showToast({ title: '网络上传失败', icon: 'none' });
+        reject(err);
+      }
     });
+  });
 }

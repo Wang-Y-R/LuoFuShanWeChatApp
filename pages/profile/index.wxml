@@ -1,7 +1,7 @@
 <view class="container">
   <view class="profile-header">
     <view class="profile-card">
-      <image src="{{user.avatarUrl}}" class="avatar" />
+      <image src="{{user.avatarUrl || 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'}}" class="avatar" />
       <view class="info">
         <view class="name">{{user.nickname}}</view>
         <view class="meta">积分 {{user.points}} · 周打卡 {{user.weeklyCheckinCount}}</view>

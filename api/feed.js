@@ -118,3 +118,29 @@ export const sendPostComment = (postId, content) => {
     content
   });
 };
+
+/**
+ * 4. 用户点赞/取消点赞
+ * 说明：用户对某条动态进行点赞或取消点赞，同一用户对同一动态只能存在一条点赞记录
+ * 方法：POST
+ * 路径：/post/like
+ * @param {number|string} postId - (必填) 动态ID
+ * @param {string} action - (必填) 操作类型：'like' 或 'unlike'
+ * @returns {Promise}
+ * 返回示例:
+ * {
+ * "code": 200,
+ * "msg": "success",
+ * "data": {
+ *   "postId": 101,
+ *   "likeCount": 12,
+ *   "liked": true
+ * }
+ * }
+ */
+export const togglePostLike = (postId, action) => {
+  return request('/post/like', 'POST', {
+    postId,
+    action
+  });
+};

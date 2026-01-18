@@ -13,11 +13,59 @@
 }
 .row-sub {
   color: #666;
+  font-size: 26rpx;
 }
-.name {
+
+.location-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.location-name {
   font-size: 30rpx;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.score {
+  font-size: 24rpx;
+  color: #07c160;
+  font-weight: 500;
+}
+
+/* 状态样式 */
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  color: #666;
+  font-size: 28rpx;
+}
+
+.no-more {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+  font-size: 26rpx;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #666;
 }

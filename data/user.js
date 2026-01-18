@@ -10,15 +10,16 @@ import { getUserInfo} from "../api/profile.js"
 
 
 const user = {
-  id:  0,
-  avatarUrl: '',
-  nickname: '',
+  id: 0,
+  avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
+  nickname: '游客',
   points: 0,
   weeklyCheckinCount: 0,
 }
 
 export const getUser = () => {
-  return wx.getStorageSync('user')
+  const storedUser = wx.getStorageSync('user');
+  return storedUser || { ...user };
 }
 
 export const setUser = (u) => {
@@ -33,10 +34,15 @@ export const getUserId = () => {
   return getUser().id
 }
 
-export const updateUser = () => {
-  getUserInfo().then(res => {
+export const updateUser = async () => {
+  try {
+    const res = await getUserInfo();
     if (res.code === 200) {
-      setUser(res.data)
+      setUser(res.data);
+      return res.data;
     }
-  })
+  } catch (error) {
+    console.error('获取用户信息失败:', error);
+    throw error;
+  }
 }

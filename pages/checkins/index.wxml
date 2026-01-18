@@ -1,15 +1,40 @@
 <view class="container">
   <view class="section-title">打卡记录</view>
+
+  <!-- 打卡记录列表 -->
   <block wx:for="{{list}}" wx:key="id">
     <view class="card" style="margin-top:16rpx;">
       <view class="card-body">
         <view class="row">
-          <text class="name">{{item.name}}</text>
-          <button class="btn-navigate" size="mini" data-lat="{{item.lat}}" data-lng="{{item.lng}}" bindtap="onNavigate">导航</button>
+          <view class="location-info">
+            <text class="location-name">{{item.locationName}}</text>
+            <text class="score">+{{item.score}}积分</text>
+          </view>
+          <button
+            class="btn-navigate"
+            size="mini"
+            data-lat="{{item.lat}}"
+            data-lng="{{item.lng}}"
+            bindtap="onNavigate"
+            wx:if="{{item.lat && item.lng}}"
+          >
+            导航
+          </button>
         </view>
-        <view class="row-sub muted">{{item.time}}</view>
+        <view class="row-sub muted">{{item.checkinTime}}</view>
       </view>
     </view>
   </block>
-  <view wx:if="{{list.length===0}}" style="color:#666;">暂无打卡记录</view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+
+  <!-- 没有更多数据提示 -->
+  <view wx:if="{{!hasMore && list.length > 0}}" class="no-more">没有更多记录了</view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{list.length===0 && !loading}}" class="empty-state">
+    <text class="empty-text">暂无打卡记录</text>
+    <text class="empty-desc">快去打卡赚取积分吧！</text>
+  </view>
 </view>

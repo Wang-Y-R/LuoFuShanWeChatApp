@@ -1,4 +1,4 @@
-import { request } from '../utils/api.js'; 
+import { request } from '../utils/api.js';
 import { getUserId } from '../data/user.js';
 
 /**
@@ -97,7 +97,7 @@ export const getCheckinHistory = (page = 1, size = 10) => {
 export const submitCheckin = (id, checkinTime) => {
   console.log(checkinTime)
   const time = encodeURIComponent(checkinTime);
-  return request('/checkin/user?locationId='+ id + '&checkinTime=' + time, 'POST');
+  return request('/checkin/user?locationId=' + id + '&checkinTime=' + time, 'POST');
 };
 
 /**
@@ -125,7 +125,7 @@ export const submitCheckin = (id, checkinTime) => {
   }
 }
 */
-export const submitSharePost = (locationId, content, images, postTime) => {
+export const sharePost = (locationId, content, images, postTime) => {
   // data 结构示例:
   // {
   //   userId: 1,

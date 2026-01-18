@@ -31,7 +31,7 @@ Page({
         avatarUrl = await uploadFile(this.data.avatarTempPath)
       }
       await changeUserInfo(this.data.nickname || '游客', avatarUrl)
-      updateUser()
+      await updateUser()
       wx.hideLoading()
       wx.showToast({ title: '已保存', icon: 'success', duration: 1500 })
       setTimeout(() => {

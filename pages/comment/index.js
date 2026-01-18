@@ -1,4 +1,4 @@
-import { getPostComments } from "../../api/feed.js";
+import { getPostComments, sendPostComment } from "../../api/feed.js";
 
 Page({
   data: {
@@ -48,10 +48,28 @@ Page({
   onInput(e) {
     this.setData({ inputValue: e.detail.value })
   },
-  onSubmit() {
-    const v = this.data.inputValue.trim()
-    if (!v) return
-    const next = { id: Date.now(), user: "我", time: "刚刚", content: v, avatar: "https://via.placeholder.com/128" }
-    this.setData({ comments: [next, ...this.data.comments], inputValue: "" })
+  async onSubmit() {
+    const content = this.data.inputValue.trim()
+    if (!content) return
+
+    try {
+      wx.showLoading({ title: '发送中...' })
+
+      const result = await sendPostComment(this.data.postId, content)
+
+      if (result.code === 200) {
+        // 重新获取评论列表
+        await this.fetchComments()
+        this.setData({ inputValue: "" })
+        wx.showToast({ title: '评论成功', icon: 'success' })
+      } else {
+        throw new Error(result.msg || '评论失败')
+      }
+    } catch (error) {
+      console.error('评论失败:', error)
+      wx.showToast({ title: '评论失败', icon: 'none' })
+    } finally {
+      wx.hideLoading()
+    }
   }
 })
