@@ -1,5 +1,5 @@
 import { changeUserInfo } from "../../api/profile.js"
-import { getUser,updateUser } from "../../data/user.js"
+import { getUser, updateUser } from "../../data/user.js"
 import { uploadFile } from "../../utils/api.js"
 
 Page({
@@ -12,7 +12,9 @@ Page({
   onLoad() {
     const user = getUser()
     if (user) {
-      this.setData({ avatarUrl: user.avatar || this.data.defaultAvatarUrl, nickname: user.nickname || '游客' })
+      // 支持多种后端返回字段名：avatar / avatarUrl / avatar_url
+      const avatarFromUser = user.avatar || user.avatarUrl || user.avatar_url || this.data.defaultAvatarUrl
+      this.setData({ avatarUrl: avatarFromUser, nickname: user.nickname || '游客' })
     }
   },
   onChooseAvatar(e) {
