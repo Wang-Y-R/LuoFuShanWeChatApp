@@ -47,4 +47,16 @@
       </view>
     </block>
   </view>
+  <!-- 在列表末尾添加 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:if="{{noMoreData && list.length > 0}}" class="no-more-container">
+    <text>没有更多数据了</text>
+  </view>
+  
+  <view wx:if="{{list.length === 0 && !loading}}" class="empty-container">
+    <text>暂无数据</text>
+  </view>
 </view>

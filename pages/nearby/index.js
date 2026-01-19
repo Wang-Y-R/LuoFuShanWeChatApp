@@ -12,13 +12,21 @@ Page({
     currentLng: null,
     locationName: null,
     page: 1,
-    size: 10
+    size: 10,
+    total: 0, // 新增：总数据条数
+    loading: false, // 新增：加载状态
+    noMoreData: false // 新增：是否没有更多数据
   },
   onLoad() {
     wx.getLocation({
       type: 'gcj02',
       success: r => {
-        this.setData({ currentLat: r.latitude, currentLng: r.longitude }, () => {
+        this.setData({ 
+          currentLat: r.latitude, 
+          currentLng: r.longitude,
+          page: 1, // 重置页码
+          noMoreData: false
+        }, () => {
           this.updateList()
           this.getLocationName(r.latitude, r.longitude)
         })
@@ -28,40 +36,110 @@ Page({
       }
     })
   },
+  
+  // 新增：下拉刷新
+  onPullDownRefresh() {
+    this.refreshData()
+  },
+  
+  // 新增：上拉加载更多
+  onReachBottom() {
+    this.loadMore()
+  },
+  
+  // 新增：刷新数据
+  refreshData() {
+    this.setData({ 
+      page: 1,
+      noMoreData: false,
+      loading: false
+    }, () => {
+      this.updateList().then(() => {
+        wx.stopPullDownRefresh()
+        wx.showToast({
+          title: '刷新成功',
+          icon: 'success'
+        })
+      })
+    })
+  },
+  
+  // 新增：加载更多数据
+  loadMore() {
+    const { loading, noMoreData } = this.data
+    if (loading || noMoreData) return
+    
+    this.setData({ loading: true })
+    
+    const nextPage = this.data.page + 1
+    this.setData({ page: nextPage }, () => {
+      this.updateList(true).then(() => {
+        this.setData({ loading: false })
+      })
+    })
+  },
+  
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 })
     }
   },
+  
   onSort(e) {
     const idx = Number(e.detail.value)
-    this.setData({ activeSort: idx }, () => this.updateList())
+    this.setData({ 
+      activeSort: idx,
+      page: 1,
+      noMoreData: false
+    }, () => this.updateList())
   },
+  
   toggleSort() {
     this.setData({ sortOpen: !this.data.sortOpen })
   },
+  
   selectSort(e) {
     const idx = Number(e.currentTarget.dataset.index)
-    this.setData({ activeSort: idx, sortOpen: false }, () => this.updateList())
+    this.setData({ 
+      activeSort: idx, 
+      sortOpen: false,
+      page: 1,
+      noMoreData: false
+    }, () => this.updateList())
   },
+  
   onRefreshLocation() {
     wx.getLocation({
       type: 'gcj02',
       success: r => {
-        this.setData({ currentLat: r.latitude, currentLng: r.longitude, locationName: null }, () => {
+        this.setData({ 
+          currentLat: r.latitude, 
+          currentLng: r.longitude, 
+          locationName: null,
+          page: 1,
+          noMoreData: false
+        }, () => {
           this.updateList()
           this.getLocationName(r.latitude, r.longitude)
         })
       }
     })
   },
+  
   onChooseLocation() {
     wx.chooseLocation({
       success: r => {
-        this.setData({ currentLat: r.latitude, currentLng: r.longitude, locationName: r.name || (r.latitude + ',' + r.longitude) }, () => this.updateList())
+        this.setData({ 
+          currentLat: r.latitude, 
+          currentLng: r.longitude, 
+          locationName: r.name || (r.latitude + ',' + r.longitude),
+          page: 1,
+          noMoreData: false
+        }, () => this.updateList())
       }
     })
   },
+  
   getLocationName(lat, lng) {
     const app = getApp()
     const key = app && app.globalData && app.globalData.mapKey
@@ -76,24 +154,34 @@ Page({
       }
     })
   },
+  
   onCategory(e) {
     const idx = Number(e.currentTarget.dataset.index)
-    this.setData({ activeCategory: idx }, () => this.updateList())
+    this.setData({ 
+      activeCategory: idx,
+      page: 1,
+      noMoreData: false
+    }, () => this.updateList())
   },
-  async updateList() {
+  
+  async updateList(isLoadMore = false) {
     const lat = this.data.currentLat
     const lng = this.data.currentLng
     if (!lat || !lng) {
       wx.showToast({ title: '定位失败，无法获取附近数据', icon: 'none' })
       this.setData({ list: [] })
-      return
+      return Promise.resolve()
     }
+    
     const type = this.data.categories[this.data.activeCategory] || '景点'
     const sortBy = this.data.sorts[this.data.activeSort] === '热度' ? 'hot' : 'distance'
+    
     try {
       const res = await getNearbyList(type, lat, lng, this.data.page, this.data.size, sortBy)
       const records = (res && res.data && Array.isArray(res.data.records)) ? res.data.records : []
-      const list = records.map(r => {
+      const total = (res && res.data && res.data.total) || 0
+      
+      const newList = records.map(r => {
         const km = typeof r.distance === 'number' ? Number((r.distance / 1000).toFixed(2)) : ''
         return {
           id: r.id,
@@ -105,12 +193,37 @@ Page({
           lng: r.longitude || r.lng || null
         }
       })
-      this.setData({ list })
+      
+      if (isLoadMore) {
+        // 加载更多时，拼接数据
+        const combinedList = [...this.data.list, ...newList]
+        this.setData({ 
+          list: combinedList,
+          total,
+          noMoreData: combinedList.length >= total || newList.length < this.data.size
+        })
+      } else {
+        // 非加载更多时，直接替换数据
+        this.setData({ 
+          list: newList,
+          total,
+          noMoreData: newList.length >= total || newList.length < this.data.size
+        })
+      }
+      
+      return Promise.resolve()
+      
     } catch (err) {
+      console.error('加载数据失败:', err)
       wx.showToast({ title: '加载失败', icon: 'none' })
-      this.setData({ list: [] })
+      this.setData({ 
+        list: isLoadMore ? this.data.list : [],
+        loading: false
+      })
+      return Promise.reject(err)
     }
   },
+  
   computeDistance(lat1, lng1, lat2, lng2) {
     const toRad = v => v * Math.PI / 180
     const R = 6371
@@ -120,6 +233,7 @@ Page({
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
     return R * c
   },
+  
   onDetail(e) {
     const id = e.currentTarget.dataset.id
     const lat = e.currentTarget.dataset.lat
@@ -129,6 +243,5 @@ Page({
     } else {
       wx.navigateTo({ url: `/pages/poi/detail?id=${id}` })
     }
-  },
-  // 卡片整体点击会触发 onDetail，导航按钮已移除
+  }
 })

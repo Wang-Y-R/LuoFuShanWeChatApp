@@ -26,6 +26,7 @@
     "color": "#666666",
     "selectedColor": "#6b4a1f",
     "backgroundColor": "#ffffff",
+    "enablePullDownRefresh": true,
     "borderStyle": "black",
     "custom": true,
     "list": [

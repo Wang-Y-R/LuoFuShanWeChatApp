@@ -31,4 +31,30 @@
       </view>
     </block>
   </view>
+  <!-- 在列表容器后面添加以下代码 -->
+
+<!-- 加载更多指示器 -->
+<view wx:if="{{loading}}" class="loading-container">
+  <view class="loading-content">
+    <text class="loading-text">加载中...</text>
+    <!-- 可选：添加加载动画 -->
+    <!-- <view class="loading-dots">
+      <text>.</text><text>.</text><text>.</text>
+    </view> -->
+  </view>
+</view>
+
+<!-- 没有更多数据提示 -->
+<view wx:if="{{noMoreData && items.length > 0}}" class="no-more-container">
+  <text class="no-more-text">没有更多数据了</text>
+</view>
+
+<!-- 空状态提示 -->
+<view wx:if="{{items.length === 0 && !loading && !isRefreshing}}" class="empty-container">
+  <image class="empty-image" src="/images/empty.png" mode="aspectFit"></image>
+  <text class="empty-text">暂无数据</text>
+  <button wx:if="{{searchQuery}}" class="empty-button" bindtap="onClearSearch">清空搜索</button>
+</view>
+
+<!-- 下拉刷新指示器（系统自带，这里可以自定义样式） -->
 </view>
