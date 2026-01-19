@@ -143,3 +143,28 @@ export const sharePost = (locationId, content, images, postTime) => {
 };
 
 
+/**
+ * 接口5: 打卡排行榜（分页）
+ * 方法: GET
+ * 路径: /checkin/rank
+ * 参数: type (day/week/month) 必填, page, size
+ */
+export const getRankList = (type, page = 1, size = 10) => {
+  return request('/checkin/rank', 'GET', {
+    type,
+    page,
+    size
+  });
+};
+
+/**
+ * 接口6: 查询当前用户排行数据
+ * 方法: GET
+ * 路径: /checkin/rank/me
+ * 参数: type (day/week/month) 必填
+ */
+export const getMyRank = (type) => {
+  return request('/checkin/rank/me', 'GET', { type });
+};
+
+

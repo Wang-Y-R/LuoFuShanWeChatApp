@@ -2,10 +2,11 @@
   margin-top: 16rpx;
 }
 .profile-header {
-  background: linear-gradient(135deg, #07c160 0%, #22c55e 50%, #a7f3d0 100%);
+  /* 更深、更饱和的鹅黄色渐变（用户要求：颜色深一点、饱和度高一点） */
+  background: linear-gradient(135deg, #f0c554 0%, #f2c93a 50%, #fbf1c4 100%);
   border-radius: 16rpx;
   padding: 24rpx;
-  color: #fff;
+  color: #1f2937;
 }
 .profile-card {
   display:flex;align-items:center;gap:16rpx;

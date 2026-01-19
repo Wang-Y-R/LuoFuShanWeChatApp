@@ -22,7 +22,8 @@
         <image class="card-img" src="{{heroImg}}" mode="aspectFill" />
         <view class="card-body">
           <view class="card-title">{{currentPage.title}}</view>
-          <scroll-view class="card-content" scroll-y>
+          <!-- 使用 scroll-view 并确保其在 flex 容器内能正确收缩（配合 CSS min-height:0） -->
+          <scroll-view class="card-content" scroll-y="true" style="flex:1;">
             <view class="card-text">{{currentPage.content}}</view>
           </scroll-view>
         </view>

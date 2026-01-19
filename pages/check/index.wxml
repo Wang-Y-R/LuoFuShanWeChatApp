@@ -21,11 +21,12 @@
   <view class="section">
     <view class="section-title">可打卡地点</view>
     <block wx:for="{{availablePlaces}}" wx:key="id">
-      <view class="place-item" data-id="{{item.id}}" bindtap="onSelectPlace">
+      <view class="place-item {{item.checked?'place-checked':''}}" data-id="{{item.id}}" bindtap="onSelectPlace">
         <view class="place-row">
           <text class="place-name">{{item.name}}</text>
           <text class="place-dist">{{item.distanceText}}</text>
         </view>
+        <view wx:if="{{item.checked}}" class="checked-badge">已打卡</view>
       </view>
     </block>
     <view wx:if="{{!availablePlaces || availablePlaces.length===0}}" style="color:#666;">暂无可打卡地点</view>

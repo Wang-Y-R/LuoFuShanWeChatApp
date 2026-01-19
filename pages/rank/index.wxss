@@ -1,3 +1,69 @@
 .card + .card {
   margin-top: 16rpx;
 }
+.tabs {
+  display:flex;
+  gap:12rpx;
+  padding: 16rpx 0;
+}
+.tab-item {
+  padding: 12rpx 20rpx;
+  border-radius: 9999rpx;
+  background: #efefef;
+  color: #333;
+  font-size: 28rpx;
+}
+.tab-item.active {
+  background: #07c160;
+  color: #fff;
+}
+.list {
+  padding-bottom: 140rpx; /* 给底部我的排行留空间 */
+}
+.rank-item {
+  display:flex;
+  align-items:center;
+  gap:16rpx;
+  padding: 16rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+  border: 1rpx solid #eaeaea;
+}
+.rank-badge {
+  width:64rpx;
+  text-align:center;
+  font-weight:700;
+  color:#666;
+}
+.rank-badge.top {
+  color:#f59e0b; /* 金色强调前3 */
+}
+.avatar {
+  width:64rpx;
+  height:64rpx;
+  border-radius:50%;
+}
+.info { flex:1; min-width:0; }
+.name { font-size:30rpx; font-weight:600; color:#333; }
+.meta { color:#999; margin-top:6rpx; }
+.score { font-size:28rpx; color:#07c160; font-weight:700; }
+.empty { color:#999; padding:40rpx 0; text-align:center; }
+.loading { text-align:center; color:#666; padding:12rpx 0; }
+.my-rank {
+  position:fixed;
+  left: 16rpx;
+  right: 16rpx;
+  bottom: 20rpx;
+  height: 96rpx;
+  background: linear-gradient(90deg, #fff, #fff);
+  border-radius: 12rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0 20rpx;
+}
+.my-label { color:#666; font-size:26rpx; }
+.my-value { font-size:32rpx; font-weight:700; color:#07c160; }
+.my-count { color:#333; font-size:28rpx; }

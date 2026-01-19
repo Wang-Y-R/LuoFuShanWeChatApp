@@ -1,21 +1,33 @@
 <view class="container">
-  <view style="display:flex;gap:16rpx;">
+  <view class="tabs">
     <block wx:for="{{tabs}}" wx:key="index">
-      <view data-index="{{index}}" bindtap="onTab" style="padding:12rpx 24rpx;border-radius:9999rpx;background-color:{{activeTab==index?'#07c160':'#efefef'}};color:{{activeTab==index?'#fff':'#333'}};">
-        {{item}}
-      </view>
+      <view data-index="{{index}}" bindtap="onTab" class="tab-item {{activeTab==index?'active':''}}">{{item}}</view>
     </block>
   </view>
-  <block wx:for="{{list}}" wx:key="id">
-    <view class="card" style="margin-top:16rpx;">
-      <view class="card-body" style="display:flex;align-items:center;gap:16rpx;">
-        <image src="{{item.avatar}}" style="width:64rpx;height:64rpx;border-radius:50%" />
-        <view style="flex:1;">
-          <view>{{item.name}}</view>
-          <view style="color:#666;">积分 {{item.points}} 打卡 {{item.count}}</view>
+
+  <view class="list">
+    <block wx:for="{{list}}" wx:key="userId">
+      <view class="rank-item" data-userid="{{item.userId}}" bindtap="onUserTap">
+        <view class="rank-badge {{item.rank<=3?'top':''}}">#{{item.rank}}</view>
+        <image class="avatar" src="{{item.avatarUrl || '/assets/default-avatar.png'}}" />
+        <view class="info">
+          <view class="name">{{item.nickname}}</view>
+          <view class="meta">打卡 {{item.checkinCount}}</view>
         </view>
-        <view>#{{item.rank}}</view>
+        <view class="score">{{item.checkinCount}}</view>
       </view>
+    </block>
+
+    <view wx:if="{{!list || list.length===0}}" class="empty">暂无排行数据</view>
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+  </view>
+
+  <!-- 底部固定：当前用户排行 -->
+  <view class="my-rank" wx:if="{{myRank}}">
+    <view class="my-info">
+      <view class="my-label">我的排名</view>
+      <view class="my-value">{{myRank.rank ? ('#' + myRank.rank) : '未上榜'}}</view>
     </view>
-  </block>
+    <view class="my-count">本期打卡 {{myRank.checkinCount || 0}}</view>
+  </view>
 </view>

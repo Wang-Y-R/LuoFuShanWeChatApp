@@ -49,14 +49,19 @@
   display: flex;
   align-items: flex-start;
   padding-right: 24rpx;
+  padding-bottom: 120rpx; /* 为底部留空 */
 }
 .card {
   width: 100%;
-  max-width: 880rpx;
+  max-width: none; /* 占满右侧整列 */
   background: #fff;
   border-radius: 12rpx;
   overflow: hidden;
   box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06);
+  /* 固定高度并让内部内容可滚动 */
+  height: calc(100vh - 200rpx);
+  display: flex;
+  flex-direction: column;
 }
 .card-img {
   width: 100%;
@@ -65,6 +70,10 @@
 }
 .card-body {
   padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* 允许内部 flex 子项正确收缩（避免子项撑开父容器） */
 }
 .card-title {
   font-size: 34rpx;
@@ -73,12 +82,21 @@
   font-weight: 600;
 }
 .card-content {
-  max-height: 520rpx;
+  /* 内容区域占据剩余高度并滚动 */
+  flex: 1;
+  min-height: 0; /* 关键：允许滚动容器在 flex 中收缩，避免内容撑开整个卡片 */
+  overflow-y: auto;
+  padding-right: 12rpx;
 }
 .card-text {
   font-size: 28rpx;
   line-height: 2.2;
   color: #666;
   padding-right: 12rpx;
+  white-space: pre-line; /* 支持换行显示段落 */
+}
+
+.card-text p {
+  margin: 12rpx 0;
 }
 

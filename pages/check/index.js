@@ -372,6 +372,12 @@ Page({
     const p = (this.availablePoints || []).find(x => x.id === id)
     if (!p) return
 
+    // 如果该点今日已打卡，则不允许再次选择（或进入打卡），并提示
+    if (this.isPointChecked(p)) {
+      wx.showToast({ title: '该地点今日已打卡', icon: 'none' })
+      return
+    }
+
     //将地图中心 (centerLat/centerLng) 移动到这个点，但保持用户位置不变
     this.setData({
       selectedLat: p.latitude,

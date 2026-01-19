@@ -32,7 +32,16 @@
 .fb-sub { color: #666; margin-bottom: 12rpx; display: block }
 .fb-actions { display:flex; gap:12rpx; justify-content:center }
 
-.place-item { padding: 12rpx 0; border-bottom: 1rpx solid #f1f1f1 }
-.place-row { display:flex; justify-content:space-between; align-items:center }
+.place-item { padding: 12rpx 0; border-bottom: 1rpx solid #f1f1f1; position: relative; display: flex; align-items: center; justify-content: space-between; }
+.place-row { display:flex; justify-content:space-between; align-items:center; flex:1; }
 .place-name { font-size: 30rpx; }
-.place-dist { color: #999 }
+.place-dist { color: #999; margin-left: 12rpx; }
+.place-checked { opacity: 0.6; }
+.checked-badge {
+  background: #f3f4f6;
+  color: #666;
+  border: 1rpx solid #e5e7eb;
+  padding: 6rpx 10rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
