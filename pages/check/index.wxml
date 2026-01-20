@@ -18,18 +18,20 @@
     <navigator url="/pages/checkins/index" open-type="navigate" class="more-link">我的打卡</navigator>
     <navigator url="/pages/rank/index" open-type="navigate" class="more-link">查看排行榜</navigator>
   </view>
-  <view class="section">
+  <view class="section places-section">
     <view class="section-title">可打卡地点</view>
-    <block wx:for="{{availablePlaces}}" wx:key="id">
-      <view class="place-item {{item.checked?'place-checked':''}}" data-id="{{item.id}}" bindtap="onSelectPlace">
-        <view class="place-row">
-          <text class="place-name">{{item.name}}</text>
-          <text class="place-dist">{{item.distanceText}}</text>
+    <scroll-view class="places-scroll" scroll-y="true">
+      <block wx:for="{{availablePlaces}}" wx:key="id">
+        <view class="place-item {{item.checked?'place-checked':''}}" data-id="{{item.id}}" bindtap="onSelectPlace">
+          <view class="place-row">
+            <text class="place-name">{{item.name}}</text>
+            <text class="place-dist">{{item.distanceText}}</text>
+          </view>
+          <view wx:if="{{item.checked}}" class="checked-badge">已打卡</view>
         </view>
-        <view wx:if="{{item.checked}}" class="checked-badge">已打卡</view>
-      </view>
-    </block>
-    <view wx:if="{{!availablePlaces || availablePlaces.length===0}}" style="color:#666;">暂无可打卡地点</view>
+      </block>
+      <view wx:if="{{!availablePlaces || availablePlaces.length===0}}" class="no-places">暂无可打卡地点</view>
+    </scroll-view>
   </view>
   <block wx:if="{{showFeedback}}">
     <view class="feedback-overlay">
